@@ -1,12 +1,10 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,24 +13,18 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 
 import java.io.IOException;
 
 
-public class GoogleAPIHelper implements
+public class GoogleAPIHelper extends AsyncTask implements
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
 
-  private static final String TAG = "Checklists";
+  private static final String TAG = "CHKLST";
 
   public static final int STATE_DEFAULT = 0;
   public static final int STATE_SIGN_IN = 1;
@@ -45,6 +37,7 @@ public class GoogleAPIHelper implements
   private Activity mainContext;
 
   private GoogleApiClient mGoogleApiClient;
+  private NetworkHelper networkClient;
 
   public int mSignInProgress;
 
@@ -53,8 +46,9 @@ public class GoogleAPIHelper implements
   private int mSignInError;
 
 
-  public GoogleAPIHelper(Activity context) {
+  public GoogleAPIHelper(Activity context, NetworkHelper client) {
     mainContext = context;
+    networkClient = client;
     mGoogleApiClient = buildGoogleApiClient();
   }
 
@@ -67,7 +61,6 @@ public class GoogleAPIHelper implements
         .addScope(Plus.SCOPE_PLUS_PROFILE)
         .build();
   }
-
 
   public void setSignInState(int state){
     mSignInProgress = state;
@@ -82,40 +75,45 @@ public class GoogleAPIHelper implements
       mGoogleApiClient.disconnect();
   }
 
-  public String getAccessToken(){
-    Bundle appActivities = new Bundle();
-    appActivities.putString(GoogleAuthUtil.KEY_REQUEST_VISIBLE_ACTIVITIES, "<REVIEW_ACTIVITY>");
-    String scopes = "oauth2:server:client_id:<SERVER-CLIENT-ID>:api_scope:email profile";
-    String accessToken = null;
+  public AsyncTask getAccessTokenAsyncTask(){
+    AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
+      @Override
+      protected String doInBackground(Object... params) {
+        final String scopes = "oauth2:email profile";
 
-    try {
+        Bundle appActivities = new Bundle();
+        appActivities.putString(GoogleAuthUtil.KEY_REQUEST_VISIBLE_ACTIVITIES, "http://schemas.google.com/AddActivity");
 
-      accessToken = GoogleAuthUtil.getToken(mainContext,
-        Plus.AccountApi.getAccountName(mGoogleApiClient),  // String accountName
-        scopes,                                            // String scope
-        appActivities                                      // Bundle bundle
-      );
-    }
+        String token = null;
+        try {
+          token = GoogleAuthUtil.getToken(mainContext,
+              Plus.AccountApi.getAccountName(mGoogleApiClient),
+              scopes);
+        }
+        catch (IOException transientEx) {
+          Log.e(TAG, transientEx.toString());
+        }
+        catch (UserRecoverableAuthException e) {
+          // Recover (with e.getIntent())
+          Log.e(TAG, e.toString());
+          Intent recover = e.getIntent();
+          //startActivityForResult(recover, REQUEST_CODE_TOKEN_AUTH);
+        }
+        catch (GoogleAuthException authEx) {
+          Log.e(TAG, authEx.toString());
+        }
 
+        return token;
+      }
 
-    catch (IOException transientEx) {
-      // network or server error, the call is expected to succeed if you try again later.
-      // Don't attempt to call again immediately - the request is likely to
-      // fail, you'll hit quotas or back-off.
+      @Override
+      protected void onPostExecute(String token) {
+        networkClient.clientTokenReceived(token);
+        Log.i(TAG, "Access token retrieved:" + token);
+      }
 
-      return null;
-    }
-    catch (UserRecoverableAuthException e) {
-      // Recover
-      accessToken = null;
-    }
-    catch (GoogleAuthException authEx) {
-      // Failure. The call is not expected to ever succeed so it should not be
-      // retried.
-      return null;
-    }
-    catch (Exception e) { throw new RuntimeException(e); }
-    return accessToken;
+    };
+    return task;
   }
 
   @Override
@@ -125,7 +123,7 @@ public class GoogleAPIHelper implements
 
     //trigger event for the Main Activity so it can switch to another fragment
 
-    ((GoogleAPIHelperEvents) mainContext).onGoogleAPIConnected();
+    networkClient.onGoogleAPIConnected();
   }
 
   @Override
@@ -198,5 +196,10 @@ public class GoogleAPIHelper implements
     // We call connect() to attempt to re-establish the connection or get a
     // ConnectionResult that we can attempt to resolve.
     mGoogleApiClient.connect();
+  }
+
+  @Override
+  protected Object doInBackground(Object[] objects) {
+    return null;
   }
 }

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="edu.upc.lsi.ptdma.checklists.app.SigninFragment">
+    tools:context="edu.upc.lsi.ptdma.checklists.app.SignInFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp">
+        android:layout_marginRight="24dp" android:clickable="false">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"

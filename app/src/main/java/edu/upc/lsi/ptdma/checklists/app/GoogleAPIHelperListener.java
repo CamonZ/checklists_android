@@ -1,6 +1,6 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
-public interface GoogleAPIHelperEvents {
+public interface GoogleAPIHelperListener {
   public void onGoogleAPIConnected();
 
   public void onGoogleAPIDisconnected();

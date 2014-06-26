@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Checklists</string>
     <string name="title_section1">Surveys</string>
     <string name="title_section2">Incidences</string>
+    <string name="title_section3">Sign Out</string>
     <string name="navigation_drawer_open">Open Options</string>
     <string name="navigation_drawer_close">Close Options</string>
-    <string name="action_example">Example action</string>
+    <string name="action_example">Checklists</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="play_services_error">Google Play services is not available.  This application will close.</string>
     <string name="close">Close</string>
+    <string name="server_client_id">145861227998-jc08j69jms160r69ka9nmqnf5hqba5da.apps.googleusercontent.com</string>
 </resources>

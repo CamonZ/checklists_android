@@ -211,6 +211,16 @@ public class NavigationDrawerFragment extends Fragment {
     }
   }
 
+  public void disableDrawer(){
+    //mDrawerLayout.closeDrawer(0);
+    getActionBar().setHomeButtonEnabled(false);
+  }
+
+  public void enableDrawer(){
+    getActionBar().setHomeButtonEnabled(true);
+  }
+
+
   @Override
   public void onDetach() {
     super.onDetach();
@@ -253,16 +263,6 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     return super.onOptionsItemSelected(item);
-  }
-
-  public void disableDrawer(){
-    getView().setVisibility(View.GONE);
-    getView().setEnabled(false);
-  }
-
-  public void enableDrawer(){
-    getView().setVisibility(View.VISIBLE);
-    getView().setEnabled(true);
   }
 
   /**

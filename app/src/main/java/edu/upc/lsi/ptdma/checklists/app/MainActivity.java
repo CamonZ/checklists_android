@@ -3,21 +3,21 @@ package edu.upc.lsi.ptdma.checklists.app;
 import android.app.Activity;
 
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import edu.upc.lsi.ptdma.checklists.app.NavigationDrawerFragment.NavigationDrawerCallbacks;
 
 
-public class MainActivity extends Activity implements GoogleAPIHelperEvents, OnSigninListener {
+public class MainActivity extends Activity implements
+    OnSignInFragmentListener,
+    NetworkEventsListener{
 
   private NavigationDrawerFragment navigationDrawer;
-  private SigninFragment signInScreen;
+  private SignInFragment signInScreen;
+
 
 
 
@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements GoogleAPIHelperEvents, OnS
 
   private CharSequence mTitle;
 
-  private GoogleAPIHelper googleConnectionHelper;
+  private NetworkHelper connectionClient;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +33,11 @@ public class MainActivity extends Activity implements GoogleAPIHelperEvents, OnS
     setContentView(R.layout.activity_main);
 
     mTitle = getTitle();
-
-    googleConnectionHelper = new GoogleAPIHelper(this);
+    connectionClient = new NetworkHelper(this);
 
     drawerEventsHandler = new DrawerEventsListener(this);
-    setUpNavigationDrawer();
 
+    setUpNavigationDrawer();
     setUpLoginFragment();
   }
 
@@ -55,7 +54,7 @@ public class MainActivity extends Activity implements GoogleAPIHelperEvents, OnS
 
   private void setUpLoginFragment(){
     if(signInScreen == null)
-      signInScreen = SigninFragment.newInstance();
+      signInScreen = SignInFragment.newInstance();
 
     getFragmentManager().
         beginTransaction().
@@ -107,33 +106,23 @@ public class MainActivity extends Activity implements GoogleAPIHelperEvents, OnS
     return super.onOptionsItemSelected(item);
   }
 
-  @Override
-  public void onGoogleAPIConnected() {
+
+  public void signedInToAPIs() {
     getFragmentManager().
         beginTransaction().
-        replace(R.id.container, PlaceholderFragment.newInstance(0)).
+        replace(R.id.container, PlaceHolderFragment.newInstance(0)).
         commit();
 
     navigationDrawer.enableDrawer();
   }
 
-  @Override
-  public void onGoogleAPIDisconnected() { onGoogleAPISignedOut(); }
-
-  @Override
-  public void onGoogleAPIConnectionError() {}
-
-  @Override
-  public void onGoogleAPISignedOut() {
-    navigationDrawer.disableDrawer();
+  public void signedOutToAPIs() {
     setUpLoginFragment();
   }
 
   public NavigationDrawerCallbacks getDrawerHandler() { return drawerEventsHandler; }
 
-  @Override
   public void onSignInButtonClicked() {
-    googleConnectionHelper.setSignInState(GoogleAPIHelper.STATE_SIGN_IN);
-    googleConnectionHelper.connectClient();
+    connectionClient.signIn();
   }
 }

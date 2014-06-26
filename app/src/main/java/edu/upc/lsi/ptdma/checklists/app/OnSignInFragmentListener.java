@@ -1,6 +1,6 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
 
-public interface OnSigninListener {
+public interface OnSignInFragmentListener {
   public void onSignInButtonClicked();
 }

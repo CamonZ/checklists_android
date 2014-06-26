@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PlaceholderFragment extends Fragment {
+public class PlaceHolderFragment extends Fragment {
   /**
    * Returns a new instance of this fragment for the given section
    * number.
    */
-  public static PlaceholderFragment newInstance(int sectionNumber) {
-    PlaceholderFragment fragment = new PlaceholderFragment();
+  public static PlaceHolderFragment newInstance(int sectionNumber) {
+    PlaceHolderFragment fragment = new PlaceHolderFragment();
     Bundle args = new Bundle();
     args.putInt(ARG_SECTION_NUMBER, sectionNumber);
     fragment.setArguments(args);
@@ -26,7 +26,7 @@ public class PlaceholderFragment extends Fragment {
    */
   private static final String ARG_SECTION_NUMBER = "section_number";
 
-  public PlaceholderFragment() {
+  public PlaceHolderFragment() {
   }
 
   @Override

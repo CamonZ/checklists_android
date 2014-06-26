@@ -1,7 +1,6 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 
 public class DrawerEventsListener implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -17,7 +16,7 @@ public class DrawerEventsListener implements NavigationDrawerFragment.Navigation
     // update the main content by replacing fragments
     FragmentManager fragmentManager = mainActivity.getFragmentManager();
     fragmentManager.beginTransaction().
-        replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).
+        replace(R.id.container, PlaceHolderFragment.newInstance(position + 1)).
         commit();
   }
 }
