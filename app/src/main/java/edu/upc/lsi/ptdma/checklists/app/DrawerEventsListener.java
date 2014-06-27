@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 
 public class DrawerEventsListener implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-  private Activity mainActivity;
+  private MainActivity mainActivity;
 
   public DrawerEventsListener(MainActivity context) {
     mainActivity = context;
@@ -14,9 +14,14 @@ public class DrawerEventsListener implements NavigationDrawerFragment.Navigation
   @Override
   public void onNavigationDrawerItemSelected(int position) {
     // update the main content by replacing fragments
-    FragmentManager fragmentManager = mainActivity.getFragmentManager();
-    fragmentManager.beginTransaction().
-        replace(R.id.container, PlaceHolderFragment.newInstance(position + 1)).
-        commit();
+
+    if(position == 2){ mainActivity.logOut(); }
+    else{
+      FragmentManager fragmentManager = mainActivity.getFragmentManager();
+      fragmentManager.beginTransaction().
+          replace(R.id.container, PlaceHolderFragment.newInstance(position + 1)).
+          commit();
+
+    }
   }
 }

@@ -1,22 +1,31 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
 import android.app.Activity;
+import android.content.Context;
+
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class NetworkHelper implements GoogleAPIHelperListener{
 
   private Activity mainContext;
   private GoogleAPIHelper googleHelper;
-
+  private CheckListsAPIHelper apiHelper;
 
   public NetworkHelper(Activity context){
     mainContext = context;
     googleHelper = new GoogleAPIHelper(mainContext, this);
+    apiHelper = new CheckListsAPIHelper(this);
   }
 
 
   public void signIn(){ startSignInProcess(); }
 
-  public void signOut(){}
+  public void signOut(){
+    googleHelper.disconnectClient();
+  }
 
 
 
@@ -25,17 +34,28 @@ public class NetworkHelper implements GoogleAPIHelperListener{
     googleHelper.connectClient();
   }
 
-  public void clientTokenReceived(String accessToken){
-    //YOLO 360 NOSCOPE LOL
+  public void onGoogleApiClientTokenReceived(HashMap credentials){
+    HashMap userAuthHash = googleHelper.getUserAuthHash();
+    userAuthHash.put("credentials", credentials);
+    JSONObject json = new JSONObject(userAuthHash);
+
+    //start the oauth sign in flow to my API
+    apiHelper.setUserSignInRequestParams(json);
+    apiHelper.startSignInFlow();
+
   }
 
-  private void finishSignIn(){
+  public Context applicationContext(){
+    return mainContext;
+  }
 
+  public void onChecklistsAPIConnected(){
+    ((NetworkEventsListener)mainContext).signedInToAPIs();
   }
 
   @Override
   public void onGoogleAPIConnected() {
-    googleHelper.getAccessTokenAsyncTask().execute();
+    googleHelper.getAccessToken();
   }
 
   @Override
@@ -46,6 +66,7 @@ public class NetworkHelper implements GoogleAPIHelperListener{
 
   @Override
   public void onGoogleAPISignedOut() {
+    ((MainActivity)mainContext).signedOutToAPIs();
   }
 
 

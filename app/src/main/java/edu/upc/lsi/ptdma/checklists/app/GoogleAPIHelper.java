@@ -15,8 +15,11 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 
 
 public class GoogleAPIHelper extends AsyncTask implements
@@ -73,9 +76,34 @@ public class GoogleAPIHelper extends AsyncTask implements
   public void disconnectClient() {
     if (mGoogleApiClient.isConnected())
       mGoogleApiClient.disconnect();
+    networkClient.onGoogleAPISignedOut();
   }
 
-  public AsyncTask getAccessTokenAsyncTask(){
+  public HashMap getUserAuthHash(){
+    Person me = getCurrentPerson();
+    HashMap<String, Object> m = new HashMap<String, Object>();
+
+    m.put("provider", "google_oauth2");
+    m.put("uid", me.getId());
+    m.put("info", getUserInfoAuthHash(me));
+
+    return m;
+  }
+
+  private HashMap getUserInfoAuthHash(Person p){
+    HashMap<String, String> m = new HashMap<String, String>();
+    m.put("name", p.getName().toString());
+    m.put("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
+    m.put("first_name", p.getName().getGivenName());
+    m.put("last_name", p.getName().getFamilyName());
+    m.put("image", p.getImage().getUrl());
+    return m;
+  }
+
+  private Person getCurrentPerson(){ return Plus.PeopleApi.getCurrentPerson(mGoogleApiClient); }
+
+
+  public void getAccessToken(){
     AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
       @Override
       protected String doInBackground(Object... params) {
@@ -107,13 +135,17 @@ public class GoogleAPIHelper extends AsyncTask implements
       }
 
       @Override
-      protected void onPostExecute(String token) {
-        networkClient.clientTokenReceived(token);
+      protected void onPostExecute(final String token) {
         Log.i(TAG, "Access token retrieved:" + token);
+        HashMap<String, String> credentials = new HashMap<String, String>(){{
+          put("token", token);
+        }};
+
+        networkClient.onGoogleApiClientTokenReceived(credentials);
       }
 
     };
-    return task;
+    task.execute();
   }
 
   @Override
@@ -188,6 +220,7 @@ public class GoogleAPIHelper extends AsyncTask implements
     // Update the UI to reflect that the user is signed out.
     //mSignInButton.setEnabled(true);
     //trigger signed out event
+    networkClient.onGoogleAPISignedOut();
   }
 
   @Override

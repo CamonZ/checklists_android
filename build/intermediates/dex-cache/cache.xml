@@ -2,16 +2,34 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-rc1-422e51efe557cfef1567b3d9f5eb841571a8a0c4.jar"
+        jar="/Users/CamonZ/Code/checklists_android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/libs/internal_impl-21.0.0-rc1.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        revision="20.0.0"
+        sha1="d1a625e8a94bf7c73e0f9d30ad1b483ff6ea64e9"/>
+    <item
+        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/classes-ef198c9cec7e88ecf51c5d51fb48df15cda2d25d.jar"
+        jar="/Users/CamonZ/Code/checklists_android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7ae84435ebc95f67a3f5e511025e96caa8688da2"/>
     <item
         dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/classes-2460f6c60097ccdddbfc85fe54e1becfdde74e75.jar"
         jar="/Users/CamonZ/Code/checklists_android/build/intermediates/exploded-aar/com.google.android.gms/play-services/4.4.52/classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3dfdf1db5ce5ea2999a5dcde8c8e650b02660059"/>
+    <item
+        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-rc1-9da56907a54bc62b80b021d0066dc3e5625c73ba.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0-rc1/support-annotations-21.0.0-rc1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="57c343f05b73b923bf2502b05851dbfe12193dcb"/>
+    <item
+        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.5-13d7d565e3da5125733e4ae5fe573dace4e0add8.jar"
+        jar="/Users/CamonZ/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.5/77bf7cacf9cefe19dc105e5425d2eb1bb5285881/android-async-http-1.4.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="77bf7cacf9cefe19dc105e5425d2eb1bb5285881"/>
 
 </pre-dex-items>

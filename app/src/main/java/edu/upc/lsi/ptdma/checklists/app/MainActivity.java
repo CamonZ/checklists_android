@@ -18,9 +18,6 @@ public class MainActivity extends Activity implements
   private NavigationDrawerFragment navigationDrawer;
   private SignInFragment signInScreen;
 
-
-
-
   private DrawerEventsListener drawerEventsHandler;
 
   private CharSequence mTitle;
@@ -49,6 +46,7 @@ public class MainActivity extends Activity implements
         R.id.navigation_drawer,
         (DrawerLayout) findViewById(R.id.drawer_layout));
 
+    navigationDrawer.setCallbacksHandler(drawerEventsHandler);
     navigationDrawer.disableDrawer();
   }
 
@@ -64,10 +62,10 @@ public class MainActivity extends Activity implements
 
   public void onSectionAttached(int number) {
     switch (number) {
-      case 1:
+      case 0:
         mTitle = getString(R.string.title_section1);
         break;
-      case 2:
+      case 1:
         mTitle = getString(R.string.title_section2);
         break;
     }
@@ -106,6 +104,9 @@ public class MainActivity extends Activity implements
     return super.onOptionsItemSelected(item);
   }
 
+  public void logOut(){
+    connectionClient.signOut();
+  }
 
   public void signedInToAPIs() {
     getFragmentManager().

@@ -1,5 +1,7 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
+import java.util.HashMap;
+
 public interface GoogleAPIHelperListener {
   public void onGoogleAPIConnected();
 
@@ -8,4 +10,6 @@ public interface GoogleAPIHelperListener {
   public void onGoogleAPIConnectionError();
 
   public void onGoogleAPISignedOut();
+
+  public void onGoogleApiClientTokenReceived(HashMap credentials);
 }

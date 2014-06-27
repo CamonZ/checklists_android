@@ -103,7 +103,8 @@ public class NavigationDrawerFragment extends Fragment {
         android.R.id.text1,
         new String[]{
             getString(R.string.title_section1),
-            getString(R.string.title_section2)
+            getString(R.string.title_section2),
+            getString(R.string.title_section3)
         }
     ));
     mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -212,7 +213,7 @@ public class NavigationDrawerFragment extends Fragment {
   }
 
   public void disableDrawer(){
-    //mDrawerLayout.closeDrawer(0);
+    mDrawerLayout.closeDrawers();
     getActionBar().setHomeButtonEnabled(false);
   }
 
@@ -220,6 +221,9 @@ public class NavigationDrawerFragment extends Fragment {
     getActionBar().setHomeButtonEnabled(true);
   }
 
+  public void setCallbacksHandler(NavigationDrawerCallbacks handler){
+    mCallbacks = handler;
+  }
 
   @Override
   public void onDetach() {
