@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-
 public class GoogleAPIHelper extends AsyncTask implements
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
@@ -65,7 +64,7 @@ public class GoogleAPIHelper extends AsyncTask implements
         .build();
   }
 
-  public void setSignInState(int state){
+  public void setSignInState(int state) {
     mSignInProgress = state;
   }
 
@@ -79,7 +78,7 @@ public class GoogleAPIHelper extends AsyncTask implements
     networkClient.onGoogleAPISignedOut();
   }
 
-  public HashMap getUserAuthHash(){
+  public HashMap getUserAuthHash() {
     Person me = getCurrentPerson();
     HashMap<String, Object> m = new HashMap<String, Object>();
 
@@ -90,7 +89,7 @@ public class GoogleAPIHelper extends AsyncTask implements
     return m;
   }
 
-  private HashMap getUserInfoAuthHash(Person p){
+  private HashMap getUserInfoAuthHash(Person p) {
     HashMap<String, String> m = new HashMap<String, String>();
     m.put("name", p.getName().toString());
     m.put("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
@@ -100,10 +99,12 @@ public class GoogleAPIHelper extends AsyncTask implements
     return m;
   }
 
-  private Person getCurrentPerson(){ return Plus.PeopleApi.getCurrentPerson(mGoogleApiClient); }
+  private Person getCurrentPerson() {
+    return Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+  }
 
 
-  public void getAccessToken(){
+  public void getAccessToken() {
     AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
       @Override
       protected String doInBackground(Object... params) {
@@ -117,17 +118,14 @@ public class GoogleAPIHelper extends AsyncTask implements
           token = GoogleAuthUtil.getToken(mainContext,
               Plus.AccountApi.getAccountName(mGoogleApiClient),
               scopes);
-        }
-        catch (IOException transientEx) {
+        } catch (IOException transientEx) {
           Log.e(TAG, transientEx.toString());
-        }
-        catch (UserRecoverableAuthException e) {
+        } catch (UserRecoverableAuthException e) {
           // Recover (with e.getIntent())
           Log.e(TAG, e.toString());
           Intent recover = e.getIntent();
           //startActivityForResult(recover, REQUEST_CODE_TOKEN_AUTH);
-        }
-        catch (GoogleAuthException authEx) {
+        } catch (GoogleAuthException authEx) {
           Log.e(TAG, authEx.toString());
         }
 
@@ -137,7 +135,7 @@ public class GoogleAPIHelper extends AsyncTask implements
       @Override
       protected void onPostExecute(final String token) {
         Log.i(TAG, "Access token retrieved:" + token);
-        HashMap<String, String> credentials = new HashMap<String, String>(){{
+        HashMap<String, String> credentials = new HashMap<String, String>() {{
           put("token", token);
         }};
 
@@ -182,8 +180,7 @@ public class GoogleAPIHelper extends AsyncTask implements
         mSignInProgress = STATE_IN_PROGRESS;
         mainContext.startIntentSenderForResult(mSignInIntent.getIntentSender(),
             RC_SIGN_IN, null, 0, 0, 0);
-      }
-      catch (IntentSender.SendIntentException e) {
+      } catch (IntentSender.SendIntentException e) {
         Log.i(TAG, "Sign in intent could not be sent: " + e.getLocalizedMessage());
 
         // The intent was canceled before it was sent.  Attempt to connect to

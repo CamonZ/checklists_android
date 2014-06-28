@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Checklists</string>
-    <string name="title_section1">Surveys</string>
-    <string name="title_section2">Incidences</string>
-    <string name="title_section3">Sign Out</string>
+    <string name="title_section1">Dashboard</string>
+    <string name="title_section2">Surveys</string>
+    <string name="title_section3">Incidences</string>
+    <string name="title_section4">Sign Out</string>
     <string name="navigation_drawer_open">Open Options</string>
     <string name="navigation_drawer_close">Close Options</string>
     <string name="action_example">Checklists</string>

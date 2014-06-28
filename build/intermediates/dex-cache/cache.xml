@@ -2,6 +2,12 @@
 <pre-dex-items>
 
     <item
+        dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/classes-5e966aa0698e5669c9b98c61f9bee0645a007f04.jar"
+        jar="/Users/CamonZ/Code/checklists_android/build/intermediates/exploded-aar/com.github.gabrielemariotti.cards/library/1.7.3/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56"/>
+    <item
         dex="/Users/CamonZ/Code/checklists_android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-rc1-422e51efe557cfef1567b3d9f5eb841571a8a0c4.jar"
         jar="/Users/CamonZ/Code/checklists_android/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0-rc1/libs/internal_impl-21.0.0-rc1.jar"
         jumboMode="false"

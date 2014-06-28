@@ -8,12 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+
+import java.util.HashMap;
+
 import edu.upc.lsi.ptdma.checklists.app.NavigationDrawerFragment.NavigationDrawerCallbacks;
 
 
 public class MainActivity extends Activity implements
     OnSignInFragmentListener,
-    NetworkEventsListener{
+    NetworkEventsListener {
 
   private NavigationDrawerFragment navigationDrawer;
   private SignInFragment signInScreen;
@@ -38,8 +41,8 @@ public class MainActivity extends Activity implements
     setUpLoginFragment();
   }
 
-  private void setUpNavigationDrawer(){
-    navigationDrawer = (NavigationDrawerFragment)getFragmentManager().
+  private void setUpNavigationDrawer() {
+    navigationDrawer = (NavigationDrawerFragment) getFragmentManager().
         findFragmentById(R.id.navigation_drawer);
 
     navigationDrawer.setUp(
@@ -50,8 +53,8 @@ public class MainActivity extends Activity implements
     navigationDrawer.disableDrawer();
   }
 
-  private void setUpLoginFragment(){
-    if(signInScreen == null)
+  private void setUpLoginFragment() {
+    if (signInScreen == null)
       signInScreen = SignInFragment.newInstance();
 
     getFragmentManager().
@@ -104,14 +107,19 @@ public class MainActivity extends Activity implements
     return super.onOptionsItemSelected(item);
   }
 
-  public void logOut(){
+  public void logOut() {
     connectionClient.signOut();
   }
 
   public void signedInToAPIs() {
+    HashMap<String, Integer> h = new HashMap<String, Integer>(){{
+      put("surveys", 100);
+      put("incidences", 127);
+    }};
+
     getFragmentManager().
         beginTransaction().
-        replace(R.id.container, PlaceHolderFragment.newInstance(0)).
+        replace(R.id.container, DashboardFragment.newInstance(connectionClient, h)).
         commit();
 
     navigationDrawer.enableDrawer();
@@ -121,7 +129,9 @@ public class MainActivity extends Activity implements
     setUpLoginFragment();
   }
 
-  public NavigationDrawerCallbacks getDrawerHandler() { return drawerEventsHandler; }
+  public NavigationDrawerCallbacks getDrawerHandler() {
+    return drawerEventsHandler;
+  }
 
   public void onSignInButtonClicked() {
     connectionClient.signIn();
