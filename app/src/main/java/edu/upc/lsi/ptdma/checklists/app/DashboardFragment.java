@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,16 +18,33 @@ import it.gmariotti.cardslib.library.view.CardView;
 public class DashboardFragment extends BaseCardFragment {
   private NetworkHelper networkClient;
   private HashMap<String, Integer> dataValues;
+  private Card.OnCardClickListener cardClickListener = new Card.OnCardClickListener() {
+    @Override
+    public void onClick(Card card, View view) {
+      MainActivity activity = ((MainActivity)getActivity());
 
-  public static DashboardFragment newInstance(NetworkHelper client, HashMap<String, Integer> data) {
-    DashboardFragment fragment = new DashboardFragment(client, data);
+      switch(view.getId()){
+        case R.id.dashboard_surveys_cardview:
+          activity.switchMainFragment(SurveysFragment.newInstance("",""));
+          break;
+        case R.id.dashboard_incidences_cardview:
+          activity.switchMainFragment(PlaceHolderFragment.newInstance(0));
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  public static DashboardFragment newInstance(NetworkHelper client) {
+    DashboardFragment fragment = new DashboardFragment(client);
     return fragment;
   }
 
-  public DashboardFragment(NetworkHelper client, HashMap<String, Integer> data) {
+  public DashboardFragment(NetworkHelper client) {
     super();
     networkClient = client;
-    dataValues = data;
+    client.getDashboardData(this);
   }
 
   @Override
@@ -35,7 +55,20 @@ public class DashboardFragment extends BaseCardFragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    addSectionsCard();
+    //addSectionsCard();
+  }
+
+  public void setDashboardDataValues(JSONObject data){
+
+    if(dataValues == null)
+      dataValues = new HashMap<String, Integer>();
+
+    try{
+      dataValues.put("surveys", data.getInt("surveys"));
+      dataValues.put("incidences", data.getInt("incidences"));
+      addSectionsCard();
+    }
+    catch(JSONException e) { throw new RuntimeException(e); }
   }
 
   private void addSectionsCard() {
@@ -58,6 +91,7 @@ public class DashboardFragment extends BaseCardFragment {
   private Card newDashboardCard(String s, Integer v){
     Card card = new Card(getActivity());
     card.addCardHeader(newDashboardCardHeaderFor(s, v));
+    card.setOnClickListener(cardClickListener);
     return card;
   }
 

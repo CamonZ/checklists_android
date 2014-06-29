@@ -1,6 +1,7 @@
 package edu.upc.lsi.ptdma.checklists.app;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 
 
@@ -11,13 +12,14 @@ import java.util.HashMap;
 public class NetworkHelper implements GoogleAPIHelperListener {
 
   private Activity mainContext;
-  private GoogleAPIHelper googleHelper;
-  private CheckListsAPIHelper apiHelper;
+  private GoogleAPIHelper googleApiClient;
+  private CheckListsAPIHelper apiClient;
+  private DashboardFragment dashboardViewController;
 
   public NetworkHelper(Activity context) {
     mainContext = context;
-    googleHelper = new GoogleAPIHelper(mainContext, this);
-    apiHelper = new CheckListsAPIHelper(this);
+    googleApiClient = new GoogleAPIHelper(mainContext, this);
+    apiClient = new CheckListsAPIHelper(this);
   }
 
 
@@ -26,23 +28,17 @@ public class NetworkHelper implements GoogleAPIHelperListener {
   }
 
   public void signOut() {
-    googleHelper.disconnectClient();
-  }
-
-
-  private void startSignInProcess() {
-    googleHelper.setSignInState(GoogleAPIHelper.STATE_SIGN_IN);
-    googleHelper.connectClient();
+    googleApiClient.disconnectClient();
   }
 
   public void onGoogleApiClientTokenReceived(HashMap credentials) {
-    HashMap userAuthHash = googleHelper.getUserAuthHash();
+    HashMap userAuthHash = googleApiClient.getUserAuthHash();
     userAuthHash.put("credentials", credentials);
     JSONObject json = new JSONObject(userAuthHash);
 
     //start the oauth sign in flow to my API
-    apiHelper.setUserSignInRequestParams(json);
-    apiHelper.startSignInFlow();
+    apiClient.setUserSignInRequestParams(json);
+    apiClient.startSignInFlow();
 
   }
 
@@ -56,7 +52,7 @@ public class NetworkHelper implements GoogleAPIHelperListener {
 
   @Override
   public void onGoogleAPIConnected() {
-    googleHelper.getAccessToken();
+    googleApiClient.getAccessToken();
   }
 
   @Override
@@ -71,6 +67,20 @@ public class NetworkHelper implements GoogleAPIHelperListener {
   @Override
   public void onGoogleAPISignedOut() {
     ((MainActivity) mainContext).signedOutToAPIs();
+  }
+
+  public void getDashboardData(DashboardFragment f){
+    if(dashboardViewController == null) dashboardViewController = f;
+    apiClient.getDashboardData();
+  }
+
+  public void onDashboardDataReceived(JSONObject object){
+    dashboardViewController.setDashboardDataValues(object);
+  }
+
+  private void startSignInProcess() {
+    googleApiClient.setSignInState(GoogleAPIHelper.STATE_SIGN_IN);
+    googleApiClient.connectClient();
   }
 
 

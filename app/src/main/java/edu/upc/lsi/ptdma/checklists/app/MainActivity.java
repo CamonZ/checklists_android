@@ -3,11 +3,11 @@ package edu.upc.lsi.ptdma.checklists.app;
 import android.app.Activity;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
-import android.view.View;
 
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements
 
   private CharSequence mTitle;
 
-  private NetworkHelper connectionClient;
+  private NetworkHelper networkManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends Activity implements
     setContentView(R.layout.activity_main);
 
     mTitle = getTitle();
-    connectionClient = new NetworkHelper(this);
+    networkManager = new NetworkHelper(this);
 
     drawerEventsHandler = new DrawerEventsListener(this);
 
@@ -57,10 +57,7 @@ public class MainActivity extends Activity implements
     if (signInScreen == null)
       signInScreen = SignInFragment.newInstance();
 
-    getFragmentManager().
-        beginTransaction().
-        replace(R.id.container, signInScreen).
-        commit();
+    switchMainFragment(signInScreen);
   }
 
   public void onSectionAttached(int number) {
@@ -108,21 +105,20 @@ public class MainActivity extends Activity implements
   }
 
   public void logOut() {
-    connectionClient.signOut();
+    networkManager.signOut();
   }
 
   public void signedInToAPIs() {
-    HashMap<String, Integer> h = new HashMap<String, Integer>(){{
-      put("surveys", 100);
-      put("incidences", 127);
-    }};
+    switchMainFragment(DashboardFragment.newInstance(networkManager));
+    navigationDrawer.enableDrawer();
+  }
 
+  public void switchMainFragment(Fragment fragment){
     getFragmentManager().
         beginTransaction().
-        replace(R.id.container, DashboardFragment.newInstance(connectionClient, h)).
+        replace(R.id.container, fragment).
         commit();
 
-    navigationDrawer.enableDrawer();
   }
 
   public void signedOutToAPIs() {
@@ -134,6 +130,6 @@ public class MainActivity extends Activity implements
   }
 
   public void onSignInButtonClicked() {
-    connectionClient.signIn();
+    networkManager.signIn();
   }
 }

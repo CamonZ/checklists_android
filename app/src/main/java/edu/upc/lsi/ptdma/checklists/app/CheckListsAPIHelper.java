@@ -18,6 +18,7 @@ public class CheckListsAPIHelper {
   private static AsyncHttpClient httpClient;
   private JSONObject userDataHash;
   private NetworkHelper networkManager;
+  private String UserUID;
 
   public CheckListsAPIHelper(NetworkHelper helper) {
     networkManager = helper;
@@ -66,7 +67,8 @@ public class CheckListsAPIHelper {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
               try {
                 // add the uid of the user to the header
-                httpClient.addHeader("UserUID", (String) userDataHash.get("uid"));
+                UserUID = (String) userDataHash.get("uid");
+                httpClient.addHeader("UserUID", UserUID);
                 networkManager.onChecklistsAPIConnected();
               } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -96,7 +98,16 @@ public class CheckListsAPIHelper {
     userDataHash = params;
   }
 
-  ;
+  public void getDashboardData() {
+    httpClient.get(BASE_API_URL + "dashboard", null, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        networkManager.onDashboardDataReceived(response);
+      }
 
-
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+      }
+    });
+  }
 }
