@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.network;
 
 import java.util.HashMap;
 

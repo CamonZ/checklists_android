@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,53 +9,48 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
+import edu.upc.lsi.ptdma.checklists.app.MainActivity;
+import edu.upc.lsi.ptdma.checklists.app.R;
+import edu.upc.lsi.ptdma.checklists.app.models.DashboardCardHeader;
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.view.CardView;
 
 
-public class DashboardFragment extends BaseCardFragment {
-  private NetworkHelper networkClient;
+public class DashboardFragment extends CardsViewFragment {
   private HashMap<String, Integer> dataValues;
-  private Card.OnCardClickListener cardClickListener = new Card.OnCardClickListener() {
-    @Override
-    public void onClick(Card card, View view) {
-      MainActivity activity = ((MainActivity)getActivity());
 
-      switch(view.getId()){
-        case R.id.dashboard_surveys_cardview:
-          activity.switchMainFragment(SurveysFragment.newInstance("",""));
-          break;
-        case R.id.dashboard_incidences_cardview:
-          activity.switchMainFragment(PlaceHolderFragment.newInstance(0));
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
-  public static DashboardFragment newInstance(NetworkHelper client) {
-    DashboardFragment fragment = new DashboardFragment(client);
+  public static DashboardFragment newInstance(NetworkHelper manager) {
+    DashboardFragment fragment = new DashboardFragment(manager);
     return fragment;
   }
 
-  public DashboardFragment(NetworkHelper client) {
-    super();
-    networkClient = client;
-    client.getDashboardData(this);
+  public DashboardFragment(NetworkHelper manager) {
+    super(manager);
+
+    listener = new Card.OnCardClickListener() {
+      @Override
+      public void onClick(Card card, View view) {
+        MainActivity activity = ((MainActivity)getActivity());
+        switch(view.getId()){
+          case R.id.dashboard_surveys_cardview:
+            activity.switchMainFragment(SurveysFragment.newInstance(networkManager));
+            break;
+          case R.id.dashboard_incidences_cardview:
+            activity.switchMainFragment(PlaceHolderFragment.newInstance(0));
+            break;
+          default:
+            break;
+        }
+      }
+    };
+
+    manager.getDashboardData(this);
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_dashboard, container, false);
-  }
-
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    //addSectionsCard();
   }
 
   public void setDashboardDataValues(JSONObject data){
@@ -91,7 +86,7 @@ public class DashboardFragment extends BaseCardFragment {
   private Card newDashboardCard(String s, Integer v){
     Card card = new Card(getActivity());
     card.addCardHeader(newDashboardCardHeaderFor(s, v));
-    card.setOnClickListener(cardClickListener);
+    card.setOnClickListener(listener);
     return card;
   }
 

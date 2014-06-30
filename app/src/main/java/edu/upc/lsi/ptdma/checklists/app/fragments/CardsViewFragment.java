@@ -1,14 +1,21 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 
-public abstract class BaseCardFragment extends Fragment {
-  private CardInteractionsListener listener;
+public abstract class CardsViewFragment extends Fragment {
+  protected Card.OnCardClickListener listener;
+  protected NetworkHelper networkManager;
+
+
+  public CardsViewFragment(NetworkHelper manager){
+    networkManager = manager;
+  }
 
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
@@ -42,6 +49,4 @@ public abstract class BaseCardFragment extends Fragment {
     CardView cardView = (CardView) getActivity().findViewById(id);
     cardView.setCard(card);
   }
-
-
 }

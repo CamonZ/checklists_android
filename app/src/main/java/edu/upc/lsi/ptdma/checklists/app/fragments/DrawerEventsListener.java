@@ -1,15 +1,22 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+
+import edu.upc.lsi.ptdma.checklists.app.fragments.DashboardFragment;
+import edu.upc.lsi.ptdma.checklists.app.MainActivity;
+import edu.upc.lsi.ptdma.checklists.app.fragments.NavigationDrawerFragment;
+import edu.upc.lsi.ptdma.checklists.app.fragments.PlaceHolderFragment;
+import edu.upc.lsi.ptdma.checklists.app.R;
+import edu.upc.lsi.ptdma.checklists.app.fragments.SurveysFragment;
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
 
 public class DrawerEventsListener implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
   private MainActivity mainActivity;
+  private NetworkHelper networkManager;
 
   private HashMap<Integer, Class> fragmentClassForPosition = new HashMap<Integer, Class>(){{
     put(0, DashboardFragment.class);
@@ -20,6 +27,7 @@ public class DrawerEventsListener implements NavigationDrawerFragment.Navigation
 
   public DrawerEventsListener(MainActivity context) {
     mainActivity = context;
+    networkManager = mainActivity.getNetworkManager();
   }
 
   @Override
@@ -44,7 +52,7 @@ public class DrawerEventsListener implements NavigationDrawerFragment.Navigation
     try {
       fragment = (Fragment)(fragmentClassForPosition.get(position)).
           getMethod("newInstance").
-          invoke(null);
+          invoke(null, networkManager);
     }
     catch (Exception e) {
       throw new RuntimeException(e);

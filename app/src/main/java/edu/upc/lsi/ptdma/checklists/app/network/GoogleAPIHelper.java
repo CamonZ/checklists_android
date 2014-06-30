@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.network;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthException;

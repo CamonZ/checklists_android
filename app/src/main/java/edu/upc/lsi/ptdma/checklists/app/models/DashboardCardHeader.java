@@ -1,10 +1,11 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.models;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import edu.upc.lsi.ptdma.checklists.app.R;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 public class DashboardCardHeader extends CardHeader {
@@ -19,7 +20,6 @@ public class DashboardCardHeader extends CardHeader {
 
   @Override
   public void setupInnerViewElements(ViewGroup parent, View view) {
-
     if (view != null) {
       TextView t1 = (TextView) view.findViewById(R.id.dashboard_card_header);
       if (t1 != null)

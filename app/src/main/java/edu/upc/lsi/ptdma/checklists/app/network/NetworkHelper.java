@@ -1,7 +1,6 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.network;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 
 
@@ -9,12 +8,19 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import edu.upc.lsi.ptdma.checklists.app.fragments.DashboardFragment;
+import edu.upc.lsi.ptdma.checklists.app.MainActivity;
+import edu.upc.lsi.ptdma.checklists.app.fragments.SurveyFragment;
+import edu.upc.lsi.ptdma.checklists.app.fragments.SurveysFragment;
+
 public class NetworkHelper implements GoogleAPIHelperListener {
 
   private Activity mainContext;
   private GoogleAPIHelper googleApiClient;
   private CheckListsAPIHelper apiClient;
   private DashboardFragment dashboardViewController;
+  private SurveysFragment surveysViewController;
+  private SurveyFragment surveyViewController;
 
   public NetworkHelper(Activity context) {
     mainContext = context;
@@ -69,8 +75,8 @@ public class NetworkHelper implements GoogleAPIHelperListener {
     ((MainActivity) mainContext).signedOutToAPIs();
   }
 
-  public void getDashboardData(DashboardFragment f){
-    if(dashboardViewController == null) dashboardViewController = f;
+  public void getDashboardData(DashboardFragment fragment){
+    if(dashboardViewController == null) dashboardViewController = fragment;
     apiClient.getDashboardData();
   }
 
@@ -84,4 +90,21 @@ public class NetworkHelper implements GoogleAPIHelperListener {
   }
 
 
+  public void getSurveys(SurveysFragment fragment) {
+    if(surveysViewController == null) surveysViewController = fragment;
+    apiClient.getSurveysData();
+  }
+
+  public void onSurveysDataReceived(JSONObject response) {
+    surveysViewController.populateListView(response);
+  }
+
+  public void getSurveyForId(SurveyFragment fragment, int id) {
+    if(surveyViewController == null) surveyViewController = fragment;
+    apiClient.getSurveyData(id);
+  }
+
+  public void onSurveyDataReceived(JSONObject response) {
+    surveyViewController.populateListView(response);
+  }
 }

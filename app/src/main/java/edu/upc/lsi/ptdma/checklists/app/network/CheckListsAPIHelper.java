@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.network;
 
 import com.loopj.android.http.*;
 
@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
 
 public class CheckListsAPIHelper {
   private static final String HOST = "http://192.168.1.101:3000/";
@@ -109,5 +111,33 @@ public class CheckListsAPIHelper {
       public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
       }
     });
+  }
+
+  public void getSurveysData() {
+    httpClient.get(BASE_API_URL + "surveys", null, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        networkManager.onSurveysDataReceived(response);
+      }
+
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+      }
+    });
+
+  }
+
+  public void getSurveyData(int id) {
+    httpClient.get(BASE_API_URL + "surveys/" + id, null, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        networkManager.onSurveyDataReceived(response);
+      }
+
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+      }
+    });
+
   }
 }

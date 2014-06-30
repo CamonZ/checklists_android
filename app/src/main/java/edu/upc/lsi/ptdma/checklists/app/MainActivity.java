@@ -9,9 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
-import java.util.HashMap;
-
-import edu.upc.lsi.ptdma.checklists.app.NavigationDrawerFragment.NavigationDrawerCallbacks;
+import edu.upc.lsi.ptdma.checklists.app.fragments.NavigationDrawerFragment;
+import edu.upc.lsi.ptdma.checklists.app.fragments.NavigationDrawerFragment.NavigationDrawerCallbacks;
+import edu.upc.lsi.ptdma.checklists.app.fragments.DashboardFragment;
+import edu.upc.lsi.ptdma.checklists.app.fragments.OnSignInFragmentListener;
+import edu.upc.lsi.ptdma.checklists.app.fragments.SignInFragment;
+import edu.upc.lsi.ptdma.checklists.app.fragments.DrawerEventsListener;
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkEventsListener;
+import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
 
 
 public class MainActivity extends Activity implements
@@ -131,5 +136,9 @@ public class MainActivity extends Activity implements
 
   public void onSignInButtonClicked() {
     networkManager.signIn();
+  }
+
+  public NetworkHelper getNetworkManager() {
+    return networkManager;
   }
 }

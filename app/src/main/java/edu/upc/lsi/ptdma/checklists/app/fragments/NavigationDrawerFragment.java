@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.fragments;
 
 
 import android.app.Activity;
@@ -21,6 +21,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import edu.upc.lsi.ptdma.checklists.app.MainActivity;
+import edu.upc.lsi.ptdma.checklists.app.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

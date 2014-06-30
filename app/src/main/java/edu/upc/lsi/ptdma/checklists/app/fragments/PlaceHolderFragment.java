@@ -1,4 +1,4 @@
-package edu.upc.lsi.ptdma.checklists.app;
+package edu.upc.lsi.ptdma.checklists.app.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import edu.upc.lsi.ptdma.checklists.app.MainActivity;
+import edu.upc.lsi.ptdma.checklists.app.R;
 
 public class PlaceHolderFragment extends Fragment {
   /**

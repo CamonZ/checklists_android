@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/survey_question_number"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:textSize="24dp"
+        android:textColor="#888" />
+
+    <RelativeLayout
+        android:layout_width="20dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/survey_question_text"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#444" />
+    </RelativeLayout>
+
+    <ToggleButton
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:text="Yes?"
+        android:id="@+id/toggleButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentRight="true" />
+
+
+</RelativeLayout>
