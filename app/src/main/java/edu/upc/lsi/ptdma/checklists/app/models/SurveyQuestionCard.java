@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,11 +14,12 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 
-public class SurveyQuestionCard extends Card {
+public class SurveyQuestionCard extends Card implements View.OnClickListener{
   private int questionId;
   private Integer questionNumber;
   private String questionText;
-  private boolean questionValue;
+  private boolean questionValue = false;
+  private ToggleButton answerButton;
 
 
 
@@ -27,23 +29,42 @@ public class SurveyQuestionCard extends Card {
     questionNumber = questionNum;
     questionId = (Integer)data.get("id");
     questionText = (String)data.get("question");
+
+
+    SurveyQuestionCardHeader header = new SurveyQuestionCardHeader(activity,
+        "Question " + this.questionNumber.toString());
+
+    addCardHeader(header);
   }
 
   @Override
   public void setupInnerViewElements(ViewGroup parent, View view) {
-
-    TextView questionNumber = (TextView) view.findViewById(R.id.survey_question_number);
-    questionNumber.setText("Question " + this.questionNumber.toString());
-
-
     TextView questionText = (TextView) view.findViewById(R.id.survey_question_text);
     questionText.setText(this.questionText);
-
-    //finish setting up toggleButton here.
+    setAnswerButton(view);
   }
 
   public int getQuestionId(){ return questionId; }
   public boolean getQuestionValue(){ return questionValue; }
 
+  private void setAnswerButton(View view){
+    answerButton = (ToggleButton) view.findViewById(R.id.question_answer_button);
 
+    answerButton.setTextOn("Yes");
+    answerButton.setTextOff("No");
+    answerButton.setChecked(false);
+    answerButton.setOnClickListener(this);
+  }
+
+  @Override
+  public void onClick(View view) {
+    questionValue = ((ToggleButton)view).isChecked();
+  }
+
+  public JSONObject toJSONObject() throws JSONException {
+    JSONObject json = new JSONObject();
+    json.put("check_item_id", questionId);
+    json.put("response", questionValue);
+    return json;
+  }
 }

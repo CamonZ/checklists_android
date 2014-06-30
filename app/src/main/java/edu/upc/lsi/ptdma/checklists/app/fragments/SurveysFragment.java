@@ -48,15 +48,16 @@ public class SurveysFragment extends ScrollableCardsViewFragment {
     return view;
   }
 
-  @Override
-  protected ArrayList<Card> cardsList(JSONObject response) {
+
+  protected ArrayList<Card> cardsList(JSONArray surveys) {
     ArrayList<Card> cards = new ArrayList<Card>();
     try {
-      JSONArray surveys = (JSONArray) response.get("surveys");
+
       int len = surveys.length();
 
       for (int i = 0; i < len; i++){
-        SurveyCard card = new SurveyCard(getActivity(), (JSONObject) surveys.get(i));
+        JSONObject surveyRoot = (JSONObject)surveys.get(i);
+        SurveyCard card = new SurveyCard(getActivity(), (JSONObject)surveyRoot.get("checklist"));
         card.setOnClickListener(listener);
         cards.add(card);
       }

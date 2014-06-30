@@ -5,29 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <it.gmariotti.cardslib.library.view.CardListView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/survey_card_list_view"/>
+        android:id="@+id/scrollView"
+        android:layout_gravity="center_horizontal" >
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <it.gmariotti.cardslib.library.view.CardListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/survey_card_list_view"
+                    android:layout_marginTop="5dp" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:id="@+id/survey_save_button"
+                    android:singleLine="false"
+                    android:layout_gravity="center_horizontal" />
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/saveSurveyButton"
-        android:singleLine="false"
-        android:layout_gravity="center_horizontal" />
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </LinearLayout>
-
-
-
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

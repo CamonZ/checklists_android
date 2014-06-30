@@ -1,5 +1,6 @@
 package edu.upc.lsi.ptdma.checklists.app.fragments;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,7 +27,18 @@ public abstract class ScrollableCardsViewFragment extends CardsViewFragment {
     setListAdapter(cardsList(response));
   }
 
+  public void populateListView(JSONArray response) {
+    if(listView == null)
+      listView = (CardListView) getActivity().findViewById(listViewId);
+
+    setListAdapter(cardsList(response));
+  }
+
   protected ArrayList<Card> cardsList(JSONObject response){
+    throw new UnsupportedOperationException("Must implement this method on the subclass");
+  }
+
+  protected ArrayList<Card> cardsList(JSONArray response){
     throw new UnsupportedOperationException("Must implement this method on the subclass");
   }
 

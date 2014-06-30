@@ -1,5 +1,7 @@
 package edu.upc.lsi.ptdma.checklists.app.network;
 
+import android.app.Activity;
+
 import com.loopj.android.http.*;
 
 import org.apache.http.Header;
@@ -21,9 +23,11 @@ public class CheckListsAPIHelper {
   private JSONObject userDataHash;
   private NetworkHelper networkManager;
   private String UserUID;
+  private Activity mainContext;
 
   public CheckListsAPIHelper(NetworkHelper helper) {
     networkManager = helper;
+    mainContext = (Activity) networkManager.applicationContext();
     httpClient = new AsyncHttpClient();
     httpClient.addHeader("Host", HOST);
   }
@@ -60,7 +64,7 @@ public class CheckListsAPIHelper {
     try {
       ByteArrayEntity entity = new ByteArrayEntity(userDataHash.toString().getBytes("UTF-8"));
       httpClient.post(
-          networkManager.applicationContext(),
+          mainContext,
           BASE_API_URL + "users/sign_in",
           entity,
           "application/json",
@@ -116,12 +120,11 @@ public class CheckListsAPIHelper {
   public void getSurveysData() {
     httpClient.get(BASE_API_URL + "surveys", null, new JsonHttpResponseHandler() {
       @Override
-      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        networkManager.onSurveysDataReceived(response);
-      }
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {}
 
       @Override
-      public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+      public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+        networkManager.onSurveysDataReceived(response);
       }
     });
 
@@ -138,6 +141,32 @@ public class CheckListsAPIHelper {
       public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
       }
     });
+
+  }
+
+  public void postSurvey(JSONObject data) {
+    try {
+      ByteArrayEntity entity = new ByteArrayEntity(data.toString().getBytes("UTF-8"));
+      httpClient.post(
+          mainContext,
+          BASE_API_URL + "surveys",
+          entity,
+          "application/json",
+          new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+              networkManager.onSurveySent();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+            }
+
+          }
+      );
+    } catch (UnsupportedEncodingException e) {
+
+    }
 
   }
 }

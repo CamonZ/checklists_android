@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class NetworkHelper implements GoogleAPIHelperListener {
     apiClient.getSurveysData();
   }
 
-  public void onSurveysDataReceived(JSONObject response) {
+  public void onSurveysDataReceived(JSONArray response) {
     surveysViewController.populateListView(response);
   }
 
@@ -106,5 +107,15 @@ public class NetworkHelper implements GoogleAPIHelperListener {
 
   public void onSurveyDataReceived(JSONObject response) {
     surveyViewController.populateListView(response);
+  }
+
+  public void saveSurvey(JSONObject data) {
+    apiClient.postSurvey(data);
+  }
+
+  public void onSurveySent() {
+    ((MainActivity)mainContext).switchMainFragment(dashboardViewController);
+
+    //make a toast with the success
   }
 }
