@@ -93,19 +93,19 @@ public class NetworkHelper implements GoogleAPIHelperListener {
 
   public void getSurveys(SurveysFragment fragment) {
     if(surveysViewController == null) surveysViewController = fragment;
-    apiClient.getSurveysData();
+    apiClient.getChecklists();
   }
 
-  public void onSurveysDataReceived(JSONArray response) {
+  public void onChecklistsReceived(JSONArray response) {
     surveysViewController.populateListView(response);
   }
 
   public void getSurveyForId(SurveyFragment fragment, int id) {
     if(surveyViewController == null) surveyViewController = fragment;
-    apiClient.getSurveyData(id);
+    apiClient.getChecklist(id);
   }
 
-  public void onSurveyDataReceived(JSONObject response) {
+  public void onChecklistReceived(JSONObject response) {
     surveyViewController.populateListView(response);
   }
 

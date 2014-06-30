@@ -12,8 +12,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import edu.upc.lsi.ptdma.checklists.app.network.NetworkHelper;
-
 public class CheckListsAPIHelper {
   private static final String HOST = "http://192.168.1.101:3000/";
   private static final String BASE_API_URL = HOST + "api/v1/";
@@ -117,24 +115,24 @@ public class CheckListsAPIHelper {
     });
   }
 
-  public void getSurveysData() {
-    httpClient.get(BASE_API_URL + "surveys", null, new JsonHttpResponseHandler() {
+  public void getChecklists() {
+    httpClient.get(BASE_API_URL + "checklists", null, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {}
 
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-        networkManager.onSurveysDataReceived(response);
+        networkManager.onChecklistsReceived(response);
       }
     });
 
   }
 
-  public void getSurveyData(int id) {
-    httpClient.get(BASE_API_URL + "surveys/" + id, null, new JsonHttpResponseHandler() {
+  public void getChecklist(int id) {
+    httpClient.get(BASE_API_URL + "checklists/" + id, null, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        networkManager.onSurveyDataReceived(response);
+        networkManager.onChecklistReceived(response);
       }
 
       @Override
